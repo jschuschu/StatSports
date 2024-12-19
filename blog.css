@@ -196,3 +196,21 @@ footer {
     color: #d0d0d0;
     margin-top: 20px;
 }
+/* Contact Us Button Styling */
+.contact-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #00e676;
+    color: #000;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.contact-button:hover {
+    background-color: #00c85d;
+    color: #fff;
+}
