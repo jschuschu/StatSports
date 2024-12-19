@@ -1,61 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Defense (DEF) Stats</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <nav>
-    <nav>
-        <ul class="nav-menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="quarterbacks.html">Quarterbacks </a></li>
-            <li><a href="runningbacks.html">Runningbacks</a></li>
-            <li><a href="widereceivers.html">Receivers</a></li>
-            <li><a href="kickers.html">Kickers</a></li>
-            <li><a href="blog.html">Talk About Football!</a></li>
-        </ul>
-    </nav>
 
-<header>
-    <h1>Defense (DEF) Stats</h1>
-</header>
-
-<!-- Filter Input -->
-<input type="text" id="def-filter" placeholder="Filter Defenses..." onkeyup="filterTable('def-table', 'def-filter')">
-
-<!-- Table -->
-<table id="def-table">
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+<table class="dataframe">
   <thead>
-    <tr>
-        <th onclick="sortTable(0)">Rk</th>
-        <th onclick="sortTable(1)">Player</th>
-        <th onclick="sortTable(2)">Age</th>
-        <th onclick="sortTable(3)">Team</th>
-        <th onclick="sortTable(4)">Pos</th>
-        <th onclick="sortTable(5)">G</th>
-        <th onclick="sortTable(6)">GS</th>
-        <th onclick="sortTable(7)">Int</th>
-        <th onclick="sortTable(8)">Yds</th>
-        <th onclick="sortTable(9)">IntTD</th>
-        <th onclick="sortTable(10)">Lng</th>
-        <th onclick="sortTable(11)">PD</th>
-        <th onclick="sortTable(12)">FF</th>
-        <th onclick="sortTable(13)">Fmb</th>
-        <th onclick="sortTable(14)">FR</th>
-        <th onclick="sortTable(15)">Yds</th>
-        <th onclick="sortTable(16)">FRTD</th>
-        <th onclick="sortTable(17)">Sk</th>
-        <th onclick="sortTable(18)">Comb</th>
-        <th onclick="sortTable(19)">Solo</th>
-        <th onclick="sortTable(20)">Ast</th>
-        <th onclick="sortTable(21)">TFL</th>
-        <th onclick="sortTable(22)">QBHits</th>
-        <th onclick="sortTable(23)">Sfty</th>
+    <tr style="text-align: right;">
     </tr>
   </thead>
+  <tbody>
+    <tr>
+      <td>Def Interceptions</td>
+      <td>Def Interceptions</td>
+      <td>Def Interceptions</td>
+      <td>Def Interceptions</td>
+      <td>Def Interceptions</td>
+      <td>Fumbles</td>
+      <td>Fumbles</td>
+      <td>Fumbles</td>
+      <td>Fumbles</td>
+      <td>Fumbles</td>
+      <td></td>
+      <td>Tackles</td>
+      <td>Tackles</td>
+      <td>Tackles</td>
+      <td>Tackles</td>
+      <td>Tackles</td>
+    </tr>
+    <tr>
+      <td>Rk</td>
+      <td>Player</td>
+      <td>Age</td>
+      <td>Team</td>
+      <td>Pos</td>
+      <td>G</td>
+      <td>GS</td>
+      <td>Int</td>
+      <td>Yds</td>
+      <td>IntTD</td>
+      <td>Lng</td>
+      <td>PD</td>
+      <td>FF</td>
+      <td>Fmb</td>
+      <td>FR</td>
+      <td>Yds</td>
+      <td>FRTD</td>
+      <td>Sk</td>
+      <td>Comb</td>
+      <td>Solo</td>
+      <td>Ast</td>
+      <td>TFL</td>
+      <td>QBHits</td>
+      <td>Sfty</td>
+    </tr>
     <tr>
       <td>1</td>
       <td>Preston Smith</td>
@@ -13531,52 +13545,3 @@
     </tr>
   </tbody>
 </table>
-
-               
-<!-- JavaScript for Sorting and Filtering -->
-<script>
-  function filterTable(tableId, filterId) {
-      const input = document.getElementById(filterId).value.toUpperCase();
-      const table = document.getElementById(tableId);
-      const rows = table.getElementsByTagName("tr");
-
-      for (let i = 1; i < rows.length; i++) {
-          const cells = rows[i].getElementsByTagName("td");
-          let match = false;
-
-          for (let j = 0; j < cells.length; j++) {
-              if (cells[j].innerText.toUpperCase().includes(input)) {
-                  match = true;
-                  break;
-              }
-          }
-          rows[i].style.display = match ? "" : "none";
-      }
-  }
-
-  function sortTable(columnIndex) {
-      const table = document.getElementById("def-table");
-      const rows = Array.from(table.querySelectorAll("tbody tr"));
-      const isAscending = table.getAttribute("data-sort-dir") !== "asc";
-
-      rows.sort((a, b) => {
-          const aVal = a.cells[columnIndex].innerText.trim();
-          const bVal = b.cells[columnIndex].innerText.trim();
-          const isNumeric = !isNaN(aVal) && !isNaN(bVal);
-
-          return isNumeric
-              ? isAscending
-                  ? bVal - aVal
-                  : aVal - bVal
-              : isAscending
-              ? bVal.localeCompare(aVal)
-              : aVal.localeCompare(bVal);
-      });
-
-      rows.forEach(row => table.querySelector("tbody").appendChild(row));
-      table.setAttribute("data-sort-dir", isAscending ? "asc" : "desc");
-  }
-</script>
-  
-</body>
-</html>

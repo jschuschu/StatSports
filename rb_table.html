@@ -1,55 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Runningback (RB) Stats</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <nav>
-    <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="quarterbacks.html">Quarterbacks </a></li>
-        <li><a href="widereceivers.html">Receivers</a></li>
-        <li><a href="kickers.html">Kickers</a></li>
-        <li><a href="defenses.html">Defense</a></li>
-        <li><a href="blog.html">Talk About Football!</a></li>
-    </ul>
-</nav>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<header>
-    <h1>Runningback (RB) Stats</h1>
-</header>
-
-<!-- Filter Input -->
-<input type="text" id="rb-filter" placeholder="Filter Runningbacks..." onkeyup="filterTable('rb-table', 'rb-filter')">
-
-<!-- Table -->
-<table id="rb-table">
-        <thead>
-        <tr>
-            <td class="sort-header" onclick="sortTable('rb-table', 0)">Rk</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 1)">Player</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 2)">Age</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 3)">Team</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 4)">Pos</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 5)">G</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 6)">GS</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 7)">Att</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 8)">Yds</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 9)">TD</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 10)">1D</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 11)">Succ%</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 12)">LNG</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 13)">Y/A</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 14)">Y/G</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 15)">A/G</td>
-            <td class="sort-header" onclick="sortTable('rb-table', 16)">FMB</td>
-        </tr>
-    </thead>
-    <tbody>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td>Rushing</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Rk</td>
+      <td>Player</td>
+      <td>Age</td>
+      <td>Team</td>
+      <td>G</td>
+      <td>GS</td>
+      <td>Att</td>
+      <td>Yds</td>
+      <td>TD</td>
+      <td>1D</td>
+      <td>Succ%</td>
+      <td>Lng</td>
+      <td>Y/A</td>
+      <td>Y/G</td>
+      <td>A/G</td>
+      <td>Fmb</td>
+      <td></td>
+    </tr>
+    <tr>
       <td>1</td>
       <td>Saquon Barkley</td>
       <td>27</td>
@@ -9532,51 +9564,3 @@
     </tr>
   </tbody>
 </table>
-    </section>
-<!-- Filtering and Sorting Script -->
-<script>
-  function filterTable(tableId, filterId) {
-      const input = document.getElementById(filterId).value.toUpperCase();
-      const table = document.getElementById(tableId);
-      const rows = table.getElementsByTagName("tr");
-
-      for (let i = 1; i < rows.length; i++) {
-          const cells = rows[i].getElementsByTagName("td");
-          let match = false;
-
-          for (let j = 0; j < cells.length; j++) {
-              if (cells[j].innerText.toUpperCase().includes(input)) {
-                  match = true;
-                  break;
-              }
-          }
-          rows[i].style.display = match ? "" : "none";
-      }
-  }
-
-  function sortTable(tableId, columnIndex) {
-      const table = document.getElementById(tableId);
-      const rows = Array.from(table.querySelectorAll("tbody tr"));
-      const isAscending = table.getAttribute("data-sort-dir") !== "asc";
-
-      rows.sort((a, b) => {
-          const aVal = a.cells[columnIndex].innerText.trim();
-          const bVal = b.cells[columnIndex].innerText.trim();
-
-          const isNumeric = !isNaN(aVal) && !isNaN(bVal);
-          return isNumeric
-              ? isAscending
-                  ? bVal - aVal
-                  : aVal - bVal
-              : isAscending
-              ? bVal.localeCompare(aVal)
-              : aVal.localeCompare(bVal);
-      });
-
-      rows.forEach(row => table.querySelector("tbody").appendChild(row));
-      table.setAttribute("data-sort-dir", isAscending ? "desc" : "asc");
-  }
-</script>
-
-</body>
-</html>

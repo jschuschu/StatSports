@@ -1,78 +1,96 @@
 import pandas as pd
-<<<<<<< HEAD
 from bs4 import BeautifulSoup
 import os
 
+# Directory where your script and HTML files are located
+input_dir = "C:/Users/LiLBitch/Downloads/COMM118 PROJECTS/20_time/"  # Adjust if necessary
+
 # List of input and output files
 files = [
+    {"input": "defense_stats.html", "output": "defense_table.html"},
     {"input": "kicker_stats.html", "output": "kicker_table.html"},
-    {"input": "def_stats.html", "output": "def_table.html"},
+    {"input": "rec_stats.html", "output": "rec_table.html"},
+    {"input": "rb_stats.html", "output": "rb_table.html"},
     {"input": "qb_stats.html", "output": "qb_table.html"},
-    {"input": "te_stats.html", "output": "te_table.html"},
-    {"input": "wr_stats.html", "output": "wr_table.html"},
 ]
+
+# Table styles for better alignment and appearance
+table_style = """
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+"""
 
 def extract_and_clean_table(input_file, output_file):
     try:
-        # Check if the HTML contains frames
-        with open(input_file, "r", encoding="utf-8") as f:
-            soup = BeautifulSoup(f, "html.parser")
-        
-        # Look for a frame or iframe and follow its source
-        frame = soup.find("frame") or soup.find("iframe")
-        if frame and frame.get("src"):
-            frame_src = os.path.join(os.path.dirname(input_file), frame.get("src"))
-            print(f"Following frame source: {frame_src}")
-            input_file = frame_src  # Redirect to the frame source
+        input_path = os.path.join(input_dir, input_file)
+        output_path = os.path.join(input_dir, output_file)
 
-        # Try extracting tables with pandas
-        tables = pd.read_html(input_file)
-        if tables:
-            # Extract the first table
-            df = tables[0]
-            
-            # Remove NaN values by replacing with an empty string
-            df.fillna("", inplace=True)
-            
-            # Force conversion of all numeric columns to integers if possible
-            for column in df.columns:
-                if pd.api.types.is_numeric_dtype(df[column]):
-                    # Try converting to int only if all values are whole numbers
-                    try:
-                        df[column] = df[column].astype(int)
-                    except ValueError:
-                        pass  # Skip columns where conversion isn't valid
-            
-            # Save the table to a clean HTML file
-            df.to_html(output_file, index=False, border=0)
-            print(f"Extracted and cleaned table saved to {output_file}")
-        else:
-            print(f"No tables found in {input_file}.")
+        # Open and parse the HTML file
+        with open(input_path, "r", encoding="utf-8") as f:
+            soup = BeautifulSoup(f, "html.parser")
+
+        # Check if the HTML file contains a frame pointing to the actual content
+        frame = soup.find("frame", {"src": True})
+        if frame:
+            # Extract the source of the frame
+            frame_src = frame["src"]
+            frame_path = os.path.join(input_dir, frame_src)
+            with open(frame_path, "r", encoding="utf-8") as frame_file:
+                soup = BeautifulSoup(frame_file, "html.parser")
+
+        # Try extracting tables using pandas
+        try:
+            tables = pd.read_html(str(soup))
+            if tables:
+                df = tables[0]
+            else:
+                print(f"No tables found in {input_file}.")
+                return
+        except Exception as e:
+            print(f"Error processing {input_file}: {e}")
+            return
+
+        # Clean the DataFrame
+        df.fillna("", inplace=True)  # Replace NaN with empty strings
+        
+        # Try converting numeric columns to integers where applicable
+        for column in df.columns:
+            if pd.api.types.is_numeric_dtype(df[column]):
+                try:
+                    df[column] = df[column].astype(int)
+                except ValueError:
+                    pass  # Ignore columns that cannot be converted
+        
+        # Convert the DataFrame to HTML with added table styles
+        html_content = table_style + df.to_html(index=False, border=0)
+        
+        # Save the cleaned table as an HTML file
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        
+        print(f"Extracted and cleaned table saved to {output_path}")
     except Exception as e:
         print(f"Error processing {input_file}: {e}")
 
-# Process each file
+# Process each file in the list
 for file in files:
     extract_and_clean_table(file["input"], file["output"])
-
-=======
-
-# Function to convert Excel to HTML and save to file
-def excel_to_html_table(file_path, output_file, table_id):
-    # Read the Excel file
-    df = pd.read_excel(file_path)
-    
-    # Convert the DataFrame to HTML with the specified table ID and class for styling
-    html_table = df.to_html(index=False, table_id=table_id, classes='stats-table')
-    
-    # Write to the output HTML file with UTF-8 encoding
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(html_table)
-
-# Convert each position's stats Excel file to an HTML table
-excel_to_html_table("C:/Users/LiLBitch/Downloads/COMM118 PROJECTS/20_time/wr Stats.xlsx", "wr_stats.html", "wr-table")
-excel_to_html_table("C:/Users/LiLBitch/Downloads/COMM118 PROJECTS/20_time/te Stats.xlsx", "te_stats.html", "te-table")
-excel_to_html_table("C:/Users/LiLBitch/Downloads/COMM118 PROJECTS/20_time/rb stats.xlsx", "rb_stats.html", "rb-table")
-excel_to_html_table("C:/Users/LiLBitch/Downloads/COMM118 PROJECTS/20_time/qb stats.xlsx", "qb_stats.html", "qb-table")
->>>>>>> 369e1d1b22f6bf749b12d02d9ddf720ddab44720
-
